@@ -1,0 +1,53 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+    - name: Import VPC Vars
+      include_vars: vars/vpc
+
+    - name: Create VPC
+      ec2_vpc_net:
+        name: "{{ vpc_name }}"
+        cidr_block: "{{ vpc_cidr }}"
+        region: "{{ region }}"
+        dns_suport: yes
+        dns_hostname: yes
+        tenancy: default
+        state: "{{ state }}"
+      register: vpcout
+
+    # - name: Create Internet Gateway
+    #   ec2_vpc_igw:
+    #     vpc_id: "{{ vpc.vpc.id }}"
+    #     region: "{{ region }}"
+    #     state: "{{ state }}"
+    #   register: igwout
+
+    # - name: Create Subnets
+    #   ec2_vpc_subnet:
+    #     vpc_id: "{{ vpc.vpc.id }}"
+    #     region: "{{ aws_region }}"
+    #     state: present
+    #     map_public: "{{ item.map_public }}"
+    #     cidr: "{{ item.cidr }}"
+    #     az: "{{ item.az }}"
+    #   with_items: "{{ vpc_subnets }}"
+    #   register: subnets
+
+    # - name: Create Route Table
+    #   ec2_vpc_route_table:
+    #     vpc_id: "{{ vpc.vpc.id }}"
+    #     region: "{{ aws_region }}"
+    #     subnets: "{{ subnets.results | map(attribute='subnet.id') | list }}"
+    #     routes:
+    #       - dest: 0.0.0.0/0
+    #         gateway_id: "{{ igw.igw.id }}"
+    #     tags:
+    #       Name: Public
+    #   register: route_table
+
+    # - name: Associate Route Table
+    #   ec2_vpc_route_table_assoc:
+    #     subnet_id: "{{ item.subnet.id }}"
+    #     route_table_id: "{{ route_table.route_table.id }}"
+    #   with_items: "{{ subnets.results }}"
