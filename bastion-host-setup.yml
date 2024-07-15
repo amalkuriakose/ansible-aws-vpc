@@ -42,14 +42,11 @@
         image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        instance_tags:
+        instance_metadata_tags:
           Name: Bastion Host
           Owner: Amal
         exact_count: 1
-        count_tags:
-          Name: Bastion Host
-          Owner: Amal
-        group_id: "{{ bastionhostsgout.group_id }}"
+        security_group: "{{ bastionhostsgout.group_id }}"
         vpc_subnet_id: "{{ pubsub1id }}"
       register: bastionhostout
 
