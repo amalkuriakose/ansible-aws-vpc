@@ -1,3 +1,3 @@
-ami: ami-0bcdb47863b39579f
+ami: "ami-0bcdb47863b39579f"
 region: us-east-2
 source_ip: 0.0.0.0/0
