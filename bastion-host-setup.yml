@@ -1,0 +1,55 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Import Bastion Host Vars
+      include_vars: vars/bastion-host
+
+    - name: Import VPC Output Vars
+      include_vars: vars/output
+
+    - name: Create key pair
+      ec2_key:
+        name: bastion-key
+        region: "{{ region }}"
+      register: keyout
+
+    - name: Save private key
+      copy:
+        content: "{{ keyout.key.private_key }}"
+        dest: "./bastion-key.pem"
+        mode: 0600
+      when: keyout.changed
+
+    - name: Create security group for bastion host
+      ec2_group:
+        name: bastion-host-sg
+        description: Allow SSH
+        region: "{{ region }}"
+        vpc_id: "{{ vpcid }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{ source_ip }}"
+      register: bastionhostsgout
+
+    - name: Create EC2 instance
+      ec2_instance:
+        key_name: bastion-key
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image: "{{ ami }}"
+        wait: yes
+        wait_timeout: 300
+        instance_tags:
+          Name: Bastion Host
+          Owner: Amal
+        exact_count: 1
+        count_tags:
+          Name: Bastion Host
+          Owner: Amal
+        group_id: "{{ bastionhostsgout.group_id }}"
+        vpc_subnet_id: "{{ pubsub1id }}"
+      register: bastionhostout
+
