@@ -97,17 +97,20 @@
           Name: pri_sub3
       register: prisub3out
 
-    # - name: Create Route Table
-    #   ec2_vpc_route_table:
-    #     vpc_id: "{{ vpc.vpc.id }}"
-    #     region: "{{ aws_region }}"
-    #     subnets: "{{ subnets.results | map(attribute='subnet.id') | list }}"
-    #     routes:
-    #       - dest: 0.0.0.0/0
-    #         gateway_id: "{{ igw.igw.id }}"
-    #     tags:
-    #       Name: Public
-    #   register: route_table
+    - name: Create Route Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpcout.vpc.id }}"
+        region: "{{ region }}"
+        subnets:
+          - "{{ pubsub1out.subnet.id }}"
+          - "{{ pubsub2out.subnet.id }}"
+          - "{{ pubsub3out.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igwout.gateway.id }}"
+        tags:
+          Name: PublicRT
+      register: pubrtout
 
     # - name: Associate Route Table
     #   ec2_vpc_route_table_assoc:
