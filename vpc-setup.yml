@@ -107,7 +107,7 @@
           - "{{ pubsub3out.subnet.id }}"
         routes:
           - dest: 0.0.0.0/0
-            gateway_id: "{{ igwout.gateway.id }}"
+            gateway_id: "{{ igwout.igw.id }}"
         tags:
           Name: PublicRT
       register: pubrtout
