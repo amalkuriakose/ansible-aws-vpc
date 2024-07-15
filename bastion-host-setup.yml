@@ -42,7 +42,7 @@
         image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        instance_metadata_tags:
+        tags:
           Name: Bastion Host
           Owner: Amal
         exact_count: 1
