@@ -168,4 +168,4 @@
     - name: Create var file for vpc output
       copy:
         content: "vpcid: {{ vpcout.vpc.id }}\npubsub1id: {{ pubsub1out.subnet.id }}\npubsub2id: {{ pubsub2out.subnet.id }}\npubsub3id: {{ pubsub3out.subnet.id }}\nprisub1id: {{ prisub1out.subnet.id }}\nprisub2id: {{ prisub2out.subnet.id }}\nprisub3id: {{ prisub3out.subnet.id }}\nigwid: {{ igwout.gateway_id }}\nnatgwid: {{ natgwout.nat_gateway_id }}\npubrtid: {{ pubrtout.route_table.id }}\nprirtid: {{ prirtout.route_table.id }}"
-        destination: vars/output
+        dest: vars/output
