@@ -135,3 +135,18 @@
         tags:
           Name: PrivateRT
       register: prirtout
+
+    - debug:
+        var: "{{ item }}"
+      loop:
+        - vpcout.vpc.id
+        - pubsub1out.subnet.id
+        - pubsub2out.subnet.id
+        - pubsub3out.subnet.id
+        - prisub1out.subnet.id
+        - prisub2out.subnet.id
+        - prisub3out.subnet.id
+        - igwout.gateway_id
+        - natgwout.nat_gateway_id
+        - pubrtout.route_table.id
+        - prirtout.route_table.id
