@@ -39,7 +39,7 @@
         key_name: bastion-key
         region: "{{ region }}"
         instance_type: t2.micro
-        image: "{{ ami }}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
         instance_tags:
